@@ -1,0 +1,336 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<PhamNhuViet_0237.Product>
+
+@{
+    ViewBag.Title = "Quản Lý Sản Phẩm";
+}
+
+<style>
+    .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+        .pagination > li {
+            display: inline;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                position: relative;
+                float: left;
+                padding: 6px 12px;
+                margin-left: -1px;
+                line-height: 1.428571429;
+                text-decoration: none;
+                background-color: #ffffff;
+                border: 1px solid #dddddd;
+            }
+
+            .pagination > li:first-child > a,
+            .pagination > li:first-child > span {
+                margin-left: 0;
+                border-bottom-left-radius: 4px;
+                border-top-left-radius: 4px;
+            }
+
+            .pagination > li:first-child > a,
+            .pagination > li:first-child > span {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+            .pagination > li > a:hover,
+            .pagination > li > span:hover,
+            .pagination > li > a:focus,
+            .pagination > li > span:focus {
+                background-color: #eeeeee;
+            }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            z-index: 2;
+            color: #ffffff;
+            cursor: default;
+            background-color: #428bca;
+        }
+
+        .pagination > .disabled > span,
+        .pagination > .disabled > a,
+        .pagination > .disabled > a:hover,
+        .pagination > .disabled > a:focus {
+            color: #999999;
+            cursor: not-allowed;
+            background-color: #ffffff;
+            border-color: #dddddd;
+        }
+
+    .pagination-lg > li > a,
+    .pagination-lg > li > span {
+        padding: 10px 16px;
+        font-size: 18px;
+    }
+
+    .pagination-lg > li:first-child > a,
+    .pagination-lg > li:first-child > span {
+        border-bottom-left-radius: 6px;
+        border-top-left-radius: 6px;
+    }
+
+    .pagination-lg > li:first-child > a,
+    .pagination-lg > li:first-child > span {
+        border-bottom-right-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .pagination-sm > li > a,
+    .pagination-sm > li > span {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .pagination-sm > li:first-child > a,
+    .pagination-sm > li:first-child > span {
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+
+    .pagination-sm > li:first-child > a,
+    .pagination-sm > li:first-child > span {
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+    .paper {
+        padding-left: 0;
+        margin: 20px 0;
+        text-align: center;
+        list-style: none;
+    }
+
+        .paper:before,
+        .paper:after {
+            display: table;
+            content: " ";
+        }
+
+        .paper:after {
+            clear: both;
+        }
+
+        .paper:before,
+        .paper:after {
+            display: table;
+            content: " ";
+        }
+
+        .paper:after {
+            clear: both;
+        }
+
+        .paper li {
+            display: inline;
+        }
+
+            .paper li > a,
+            .paper li > span {
+                display: inline-block;
+                padding: 5px 14px;
+                background-color: #ffffff;
+                border: 1px solid #dddddd;
+                border-radius: 15px;
+            }
+
+                .paper li > a:hover,
+                .paper li > a:focus {
+                    text-decoration: none;
+                    background-color: #eeeeee;
+                }
+
+        .paper .next > a,
+        .paper .next > span {
+            float: right;
+        }
+
+        .paper .previous > a,
+        .paper .previous > span {
+            float: left;
+        }
+
+        .paper .disabled > a,
+        .paper .disabled > a:hover,
+        .paper .disabled > a:focus,
+        .paper .disabled > span {
+            color: #999999;
+            cursor: not-allowed;
+            background-color: #ffffff;
+        }
+</style>
+
+<h2>Quản Lý Sản Phẩm</h2>
+
+<p>
+    @Html.ActionLink("Tạo Mới", "Create")
+</p>
+
+@using (Html.BeginForm("ListProduct", "Product", FormMethod.Get))
+{
+    <p>
+        Tìm tên sản phẩm: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Tìm kiếm" />
+    </p>
+}
+
+<table class="table table-bordered ">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Avatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().CategoryId)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ShortDes)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FullDescription)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PriceDiscount)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().TypeId)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Slug)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().BrandId)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Deleted)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShowOnHomePage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DisplayOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedOnUtc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdatedOnUtc)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="text-center align-middle">
+                    <img src="~/Content/images/items/@item.Avatar" class="img-size-64" />
+                </td>
+                <td>
+                    @if (item.CategoryId == 1)
+                    {
+                        <p>PlayStation 5</p>
+                    }
+                    @if (item.CategoryId == 2)
+                    {
+                        <p>PlayStation 4</p>
+                    }
+                    @if (item.CategoryId == 3)
+                    {
+                        <p>Xbox Series X|S</p>
+                    }
+                    @if (item.CategoryId == 4)
+                    {
+                        <p>Xbox One</p>
+                    }
+                    @if (item.CategoryId == 5)
+                    {
+                        <p>Nintendo Switch</p>
+                    }
+                    @if (item.CategoryId == 6)
+                    {
+                        <p>Phụ kiện</p>
+                    }
+                    @if (item.CategoryId == 7)
+                    {
+                        <p>Game</p>
+                    }
+                    @if (item.CategoryId == 8)
+                    {
+                        <p>Mô hình</p>
+                    }
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.ShortDes)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.FullDescription)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PriceDiscount)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.TypeId)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slug)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.BrandId)
+                    </td>*@
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Deleted)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ShowOnHomePage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedOnUtc)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdatedOnUtc)
+                    </td>*@
+                <td>
+                    <a href="@Url.Action("Edit","Product",new {id=item.Id})"><i class="fas fa-pen"></i></a>
+                    |
+                    <a href="@Url.Action("Details", "Product", new {id=item.Id})" style="color:darkgray"><i class="fas fa-file"></i></a>
+                    |
+                    <a href="@Url.Action("Delete", "Product", new {id=item.Id})" style="color:lightcoral"><i class=" fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@Html.PagedListPager(Model, page => Url.Action("ListProduct", new { page, currentFilter = ViewBag.currentFilter }))

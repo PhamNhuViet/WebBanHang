@@ -1,0 +1,32 @@
+﻿@model List<PhamNhuViet_0237.Category>
+@{
+    ViewBag.Title = "Category";
+}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+
+        <nav class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 padding-bottom">
+                    <div class="card card-body">
+                        <a href="@Url.Action("ProductCategory", "Category", new {id=item.Id})" class="img-wrap" style="background: #ddffeb">
+                            <img src="~/Content/images/items/@item.Avatar">
+                        </a>
+                        <div class="card-body">
+                            <h4 class="card-title"><a href="@Url.Action("ProductCategory", "Category", new {id=item.Id})">@item.Name</a></h4>
+                            
+                        </div>
+                    </div>
+                </div> <!-- col.// -->
+            }
+
+        </nav> <!-- row.// -->
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= FOOTER ========================= -->

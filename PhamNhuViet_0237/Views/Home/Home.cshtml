@@ -1,0 +1,354 @@
+﻿@model PhamNhuViet_0237.Models.HomeModel
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="container">
+    <!-- ========================= SECTION MAIN  ========================= -->
+    <section class="section-main padding-y">
+        <main class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <aside class="col-lg col-md-3 flex-lg-grow-0">
+                        <h6><a href="@Url.Action("Category","Category")">Danh Mục</a></h6>
+                        <nav class="nav-home-aside">
+                            <ul class="menu-category">
+
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=1})"><i class="fab fa-playstation"></i> PlayStation 5</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=2})"><i class="fab fa-playstation"></i> PlayStation 4</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=3})"><i class="fab fa-xbox"></i> Xbox Series X | S</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=4})"><i class="fab fa-xbox"></i> Xbox One</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=5})"><i class="fab fa-nintendo-switch"></i> Nintendo Switch</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=6})"><i class="fas fa-headset"></i> Phụ Kiện</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=7})"><i class="fas fa-gamepad"></i> Game</a></li>
+                                <li><a href="@Url.Action("ProductCategory", "Category", new {@id=8})"><i class="fas fa-torii-gate"></i> Mô Hình</a></li>
+
+                            </ul>
+                        </nav>
+                    </aside> <!-- col.// -->
+                    <div class="col-md-9 col-xl-7 col-lg-7">
+
+                        <!-- ================== COMPONENT SLIDER  BOOTSTRAP  ==================  -->
+                        <div id="carousel1_indicator" class="slider-home-banner carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel1_indicator" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel1_indicator" data-slide-to="1"></li>
+                                <li data-target="#carousel1_indicator" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <a href="@Url.Action("ProductCategory", "Category", new {@id=1})"><img src="~/Content/images/banners/ps5banner.jpg" alt="First slide"></a>
+                                </div>
+                                <div class="carousel-item">
+                                    <a href="@Url.Action("ProductCategory", "Category", new {@id=3})"><img src="~/Content/images/banners/xboxseriesbanner.jpg" alt="Second slide"></a>
+                                </div>
+                                <div class="carousel-item">
+                                    <a href="@Url.Action("ProductCategory", "Category", new {@id=5})"><img src="~/Content/images/banners/nintendoswitchbanner.jpg" alt="Third slide"></a>
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carousel1_indicator" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel1_indicator" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                        <!-- ==================  COMPONENT SLIDER BOOTSTRAP end.// ==================  .// -->
+
+                    </div> <!-- col.// -->
+                    <div class="col-md d-none d-lg-block flex-grow-1">
+                        <aside class="special-home-right">
+                            <h6 class="bg-blue text-center text-white mb-0 p-2">Danh Mục Phổ biến</h6>
+
+                            @foreach (var item in Model.ListCategories.Where(n => n.isPopular == 1))
+                            {
+                                <div class="card-banner border-bottom">
+                                    <div class="py-3" style="width:80%">
+                                        <h6 class="card-title">@item.Name</h6>
+                                        <a href="@Url.Action("ProductCategory", "Category", new {@id=item.Id})" class="btn btn-secondary btn-sm"> Mua ngay </a>
+                                    </div>
+                                    <img src="~/Content/images/items/@item.Avatar" height="80" class="img-bg">
+                                </div>
+                            }
+
+                        </aside>
+                    </div> <!-- col.// -->
+                </div> <!-- row.// -->
+
+            </div> <!-- card-body.// -->
+        </main> <!-- card.// -->
+
+    </section>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+    <!-- =============== SECTION DEAL =============== -->
+    <section class="padding-bottom">
+        <div class="card card-deal">
+            <div class=" content-body">
+                <header class="section-heading">
+                    <h3 class="section-title">Giảm Giá</h3>
+                </header><!-- sect-heading -->
+                <div class="timer">
+                    <img src="~/Content/images/items/Sale5.png" style="width: 200px; height: 170px">
+                </div>
+            </div> <!-- col.// -->
+            <div class="row no-gutters items-wrap">
+
+                @foreach (var item in Model.ListProducts.Where(n => n.TypeId == 1))
+                {
+                    <div class="col-md col-6">
+                        <figure class="card-product-grid card-sm">
+                            <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="img-wrap">
+                                <img src="~/Content/images/items/@item.Avatar">
+                            </a>
+                            <div class="text-wrap p-3">
+                                <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="title">@item.Name</a>
+                                @if (item.PriceDiscount != null)
+                                {
+                                    <span class="h6 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span><br />
+                                    <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.Price)</small><sup class="text-muted">đ</sup>
+                                }
+                                else
+                                {
+                                    <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                                }
+                                @*<span class="badge badge-danger"> -20% </span>*@
+                            </div>
+                        </figure>
+                    </div> <!-- col.// -->
+                }
+
+            </div>
+        </div>
+
+    </section>
+    <!-- =============== SECTION DEAL // END =============== -->
+    <!-- =============== SECTION 1 =============== -->
+    <section class="padding-bottom">
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase">PlayStation 5</h4>
+        </header>
+
+        <div class="card card-home-category">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+
+                    <div class="home-category-banner bg-light-blue">
+                        <h5 class="title ">Play Has<br /> No<br /> Limit</h5>
+                        <!-- <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> -->
+                        <a href="@Url.Action("ProductCategory", "Category", new {@id=1})" class="btn btn-outline-dark rounded-pill">Mua ngay</a>
+                        <img src="~/Content/images/items/ps5-se-vn.jpg" class="img-bg">
+                    </div>
+
+                </div> <!-- col.// -->
+                <div class="col-md-9">
+                    <ul class="row no-gutters bordered-cols">
+                        @foreach (var item in Model.ListProducts.Where(n => n.CategoryId == 1))
+                        {
+                            <li class="col-6 col-lg-3 col-md-4">
+                                <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="item">
+                                    <div class="card-body">
+                                        <h6 class="title">@item.Name  </h6>
+                                        <img class="img-sm float-right" src="~/Content/images/items/@item.Avatar">
+                                        @if (item.PriceDiscount != null)
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span>
+                                            <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.Price)</small><sup class="text-muted">đ</sup>
+                                        }
+                                        else
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+    </section>
+    <!-- =============== SECTION 1 END =============== -->
+    <!-- =============== SECTION 2 =============== -->
+    <section class="padding-bottom">
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase">PlayStation 4</h4>
+        </header>
+
+        <div class="card card-home-category">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+
+                    <div class="home-category-banner bg-light-blue">
+                        <h5 class="title ">Where <br />The Greatest<br /> Play</h5>
+                        <!-- <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> -->
+                        <a href="@Url.Action("ProductCategory", "Category", new {@id=2})" class="btn btn-outline-dark rounded-pill">Mua ngay</a>
+                        <img src="~/Content/images/items/ps4-slim-1tb.jpg" class="img-bg">
+                    </div>
+
+                </div> <!-- col.// -->
+                <div class="col-md-9">
+                    <ul class="row no-gutters bordered-cols">
+
+                        @foreach (var item in Model.ListProducts.Where(n => n.CategoryId == 2))
+                        {
+                            <li class="col-6 col-lg-3 col-md-4">
+                                <a href="@Url.Action("ProductDetail", "Product", new {Id=item.Id})" class="item">
+                                    <div class="card-body">
+                                        <h6 class="title">@item.Name  </h6>
+                                        <img class="img-sm float-right" src="~/Content/images/items/@item.Avatar">
+                                        @if (item.PriceDiscount != null)
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span>
+                                            <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.Price)</small><sup class="text-muted">đ</sup>
+                                        }
+                                        else
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+    </section>
+    <!-- =============== SECTION 2 END =============== -->
+    <!-- =============== SECTION 3 =============== -->
+    <section class="padding-bottom">
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase">XBOX Series</h4>
+        </header>
+
+        <div class="card card-home-category">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+
+                    <div class="home-category-banner bg-light-green">
+                        <h5 class="title ">Power<br /> Your<br /> Dream</h5>
+                        <!-- <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> -->
+                        <a href="@Url.Action("ProductCategory", "Category", new {@id=3})" class="btn btn-outline-dark rounded-pill">Mua ngay</a>
+                        <img src="~/Content/images/items/xboxseries.png" class="img-bg">
+                    </div>
+
+                </div> <!-- col.// -->
+                <div class="col-md-9">
+                    <ul class="row no-gutters bordered-cols">
+
+                        @foreach (var item in Model.ListProducts.Where(n => n.CategoryId == 3))
+                        {
+                            <li class="col-6 col-lg-3 col-md-4">
+                                <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="item">
+                                    <div class="card-body">
+                                        <h6 class="title">@item.Name  </h6>
+                                        <img class="img-sm float-right" src="~/Content/images/items/@item.Avatar">
+                                        @if (item.PriceDiscount != null)
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span>
+                                            <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.Price)</small><sup class="text-muted">đ</sup>
+                                        }
+                                        else
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+    </section>
+    <!-- =============== SECTION 3 END =============== -->
+    <!-- =============== SECTION 4 =============== -->
+    <section class="padding-bottom">
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase">Nintendo Switch</h4>
+        </header>
+
+        <div class="card card-home-category">
+            <div class="row no-gutters">
+                <div class="col-md-3">
+
+                    <div class="home-category-banner bg-danger">
+                        <h5 class="title ">Anytime<br /> Anywhere<br /> With Anyone</h5>
+                        <!-- <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p> -->
+                        <a href="@Url.Action("ProductCategory", "Category", new {@id=5})" class="btn btn-outline-dark rounded-pill">Mua ngay</a>
+                        <img src="~/Content/images/items/nintendoswitch.jpg" class="img-bg">
+                    </div>
+
+                </div> <!-- col.// -->
+                <div class="col-md-9">
+                    <ul class="row no-gutters bordered-cols">
+
+                        @foreach (var item in Model.ListProducts.Where(n => n.CategoryId == 5))
+                        {
+                            <li class="col-6 col-lg-3 col-md-4">
+                                <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="item">
+                                    <div class="card-body">
+                                        <h6 class="title">@item.Name  </h6>
+                                        <img class="img-sm float-right" src="~/Content/images/items/@item.Avatar">
+                                        @if (item.PriceDiscount != null)
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span>
+                                            <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.Price)</small><sup class="text-muted">đ</sup>
+                                        }
+                                        else
+                                        {
+                                            <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
+        </div> <!-- card.// -->
+    </section>
+    <!-- =============== SECTION 4 END =============== -->
+    <!-- =============== SECTION ITEMS =============== -->
+    <section class="padding-bottom-sm">
+
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase">Sản Phẩm Đề Xuất</h4>
+        </header>
+
+        <div class="row row-sm">
+
+            @foreach (var item in Model.ListProducts.Where(n => n.TypeId == 2))
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-6">
+                    <div href="#" class="card card-sm card-product-grid">
+                        <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="img-wrap"> <img src="~/Content/images/items/@item.Avatar"> </a>
+                        <figcaption class="info-wrap">
+                            <a href="@Url.Action("ProductDetail", "Product", new {id=item.Id})" class="title">@item.Name</a>
+                            @if (item.PriceDiscount != null)
+                            {
+                                <span class="h6 price">@string.Format("{0:0,0}", item.PriceDiscount)<sup>đ</sup></span>
+                                <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", item.PriceDiscount)</small><sup class="text-muted">đ</sup>
+                            }
+                            else
+                            {
+                                <span class="h5 price">@string.Format("{0:0,0}", item.Price)<sup>đ</sup></span>
+                            }<!-- prie wrap -->
+                        </figcaption>
+                    </div>
+                </div> <!-- col.// -->
+            }
+
+        </div> <!-- row.// -->
+    </section>
+    <!-- =============== SECTION ITEMS .//END =============== -->
+</div>
+<!-- container end.// -->
+<!-- ========================= FOOTER ========================= -->

@@ -1,0 +1,192 @@
+﻿@model PhamNhuViet_0237.Product
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Xóa</h2>
+
+<h3>Bạn có chắc muốn xóa sản phẩm này?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Slug)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Slug)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Avatar)
+            <div class="col-md-2">
+                <img src="~/Content/images/items/@Model.Avatar" id="avatar" width="100%" />
+            </div>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Avatar)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+
+        <dd>
+            @if (Model.CategoryId == 1)
+            {
+                <p>PlayStation 5</p>
+            }
+            @if (Model.CategoryId == 2)
+            {
+                <p>PlayStation 4</p>
+            }
+            @if (Model.CategoryId == 3)
+            {
+                <p>Xbox Series X|S</p>
+            }
+            @if (Model.CategoryId == 4)
+            {
+                <p>Xbox One</p>
+            }
+            @if (Model.CategoryId == 5)
+            {
+                <p>Nintendo Switch</p>
+            }
+            @if (Model.CategoryId == 6)
+            {
+                <p>Phụ kiện</p>
+            }
+            @if (Model.CategoryId == 7)
+            {
+                <p>Game</p>
+            }
+            @if (Model.CategoryId == 8)
+            {
+                <p>Mô hình</p>
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortDes1)
+        </dt>
+
+        <dd>
+            @Html.Raw(HttpUtility.HtmlDecode(@Model.ShortDes1))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullDescription1)
+        </dt>
+
+        <dd>
+            @Html.Raw(HttpUtility.HtmlDecode(@Model.FullDescription1))
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceDiscount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceDiscount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeId)
+        </dt>
+
+        <dd>
+            @if (Model.TypeId == 1)
+            {
+                <p>Giảm giá</p>
+            }
+            @if (Model.TypeId == 2)
+            {
+                <p>Đề xuất</p>
+            }
+            @if (Model.TypeId == 0)
+            {
+                <p>Mặc định</p>
+            }
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.BrandId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BrandId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShowOnHomePage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShowOnHomePage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisplayOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOnUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOnUtc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedOnUtc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedOnUtc)
+        </dd>*@
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-default" />
+        </div>
+        
+    }
+</div>
+<div>
+    @Html.ActionLink("Trở lại danh sách", "ListProduct")
+</div>

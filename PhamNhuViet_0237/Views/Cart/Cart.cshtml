@@ -1,0 +1,216 @@
+﻿@model IEnumerable<PhamNhuViet_0237.Models.CartModel>
+@{
+    ViewBag.Title = "Cart";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#removecart").click(function () {
+            var model = {};
+            //lấy id sản phẩm
+            model.Id = $("#productid").val();
+            // lấy số lượng đặt hàng
+            model.Quantity = $("#ipQuantity").val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Remove", "Cart")',
+                data:  JSON.stringify(model) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    $("#CartCount").text(@Session["count"] - 1);
+                    $("#product-" + model.Id).remove();
+                },
+                error: function () {
+                    alert("Lỗi trong khi thêm vào giỏ hàng!");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+@{decimal total = 0;}
+@{ decimal discount = 0;}
+@{ decimal subtotal = 0;}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <div class="container">
+
+        <div class="row">
+            <main class="col-md-9">
+                <div class="card">
+
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">sản phẩm</th>
+                                <th scope="col" width="120">số lượng</th>
+                                <th scope="col" width="120">giá</th>
+                                <th scope="col" class="text-right" width="200"> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr id="product-@item.Product.Id">
+                                        <td>
+                                            <figure class="itemside">
+                                                <div class="aside"><img src="~/Content/images/items/@item.Product.Avatar" class="img-sm"></div>
+                                                <figcaption class="info">
+                                                    <a href="#" class="title text-dark">@item.Product.Name</a>
+                                                    <p class="text-muted small"><br></p>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td>
+                                            <div style="white-space:nowrap;width:250px">
+                                                <input id="ipQuantity" type="text" value="@item.Quantity" size="1px" min="1" max="99" />
+                                            </div>
+
+                                            @*<input type="text" value="@item.Quantity" />*@
+                                        </td>
+                                        @if (item.Product.PriceDiscount != null)
+                                        {
+                                            <td>
+                                                <div class="price-wrap">
+                                                    <var class="price">@string.Format("{0:0,0}", Convert.ToDecimal(item.Product.PriceDiscount))<sup>đ</sup></var>
+                                                    <small class="text-muted" style="text-decoration-line:line-through"> @string.Format("{0:0,0}", item.Product.Price) </small><sup class="text-muted">đ</sup>
+                                                </div> <!-- price-wrap .// -->
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <div class="price-wrap">
+                                                    <var class="price">@string.Format("{0:0,0}", Convert.ToDecimal(item.Product.Price))<sup>đ</sup></var>
+                                                </div> <!-- price-wrap .// -->
+                                            </td>
+                                        }
+
+                                        <td class="text-right">
+                                            <input type="hidden" value="@item.Product.Id" id="productid" />
+                                            <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+                                            <a href="" class="btn btn-light" id="removecart"> Xóa</a>
+                                        </td>
+                                    </tr>
+                                    total += (@Convert.ToDecimal(item.Product.Price) * item.Quantity);
+                                    if (item.Product.PriceDiscount != null)
+                                    {
+                                        discount += (@Convert.ToDecimal(item.Product.Price) * item.Quantity) - (@Convert.ToDecimal(item.Product.PriceDiscount) * item.Quantity);
+                                        subtotal = total - discount;
+                                    }
+                                    else
+                                    {
+                                        subtotal = total;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <div class="d-flex justify-content-center">
+                                    <h3>Không có sản phẩm trong giỏ hàng</h3>
+                                </div>
+                            }
+
+                        </tbody>
+                    </table>
+
+                    <div class="card-body border-top">
+                        <a href="@Url.Action("Payment","Payment")" class="btn btn-primary float-md-right"> Thanh Toán <i class="fa fa-chevron-right"></i> </a>
+                        <a href="@Url.Action("Home","Home")" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Tiếp tục mua hàng </a>
+                    </div>
+                </div> <!-- card.// -->
+
+                <div class="alert alert-success mt-3">
+                    <p class="icontext"><i class="icon text-success fa fa-truck"></i> Miễn phí vận chuyển trong vòng 1-2 tuần</p>
+                </div>
+
+            </main> <!-- col.// -->
+            <aside class="col-md-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label>Có mã giảm giá?</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="" placeholder="Nhập mã giảm giá">
+                                    <span class="input-group-append">
+                                        <button class="btn btn-primary">Áp dụng</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- card-body.// -->
+                </div>  <!-- card .// -->
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Tổng tiền:</dt>
+                            <dd class="text-right">@string.Format("{0:0,0}", Convert.ToDecimal(total))<sup>đ</sup></dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Giảm giá:</dt>
+                            <dd class="text-right">
+                                @string.Format("{0:0,0}", Convert.ToDecimal(discount))<sup>đ</sup>
+                            </dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Tổng cộng:</dt>
+                            <dd class="text-right  h5"><strong>@string.Format("{0:0,0}", Convert.ToDecimal(subtotal))<sup>đ</sup></strong></dd>
+                        </dl>
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="~/Content/images/misc/payments.png" height="26">
+                        </p>
+
+                    </div> <!-- card-body.// -->
+
+                </div>  <!-- card .// -->
+            </aside> <!-- col.// -->
+        </div>
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name border-top padding-y">
+    <div class="container">
+        <h6>Chính sách vận chuyển</h6>
+        <p>
+            <h5 style="color:red"> TP.HỒ CHÍ MINH</h5>
+            • Nội thành TP. Hồ Chí Minh: Quận 1, 3, 4, 5, 6, 7, 8, 10, 11, Tân Phú,
+            Tân Bình, Phú Nhuận, Gò Vấp, Bình Thạnh, Bình Tân.
+            <br />
+            • Ngoại thành TP. Hồ Chí Minh:  Quận 12, TP. Thủ Đức (Thủ Đức, Q2, Q9), Huyện Củ Chi,
+            Huyện Hóc Môn, Huyện Bình Chánh, Huyện Nhà Bè.
+        </p>
+        <p>
+            <h5 style="color:red">TP. HÀ NỘI</h5>
+            • Nội thành Hà Nội: Quận Ba Đình, Hoàn Kiếm, Đống Đa, Hai Bà Trưng, Cầu Giấy,
+            Thanh Xuân, Tây Hồ, Long Biên,
+            Hà Đông, Bắc – Nam Từ Liêm, Hoàng Mai, Đông Anh, Gia Lâm, Hoài Đức, Chương Mỹ,
+            Mê Linh, Thanh Trì, Đan Phượng, Thanh Oai.
+        </p>
+        <p>
+            <h6>Thời gian giao hàng khu vực nội thành:</h6>
+
+            ➤ Đơn hàng xác nhận trước 15h bạn sẽ nhận hàng sau 1~2 ngày đặt hàng.
+            <br />
+            ➤ Đơn hàng xác nhận sau 15h thời gian toàn trình sẽ cộng thêm 1 ngày.
+            <br />
+            ➤ Quý khách được hỗ trợ giao hàng lại lần 2 nếu lần giao đầu tiên không thành công. Hoặc nhờ người thân, bạn bè nhận hộ nếu có việc đột xuất không có ở địa chỉ nhận hàng.
+            <br />
+            <br />
+            <h6>Thời gian giao hàng khu vực ngoại thành:</h6>
+
+            ➤ Đơn hàng xác nhận trước 15h bạn sẽ nhận hàng sau 2~3 ngày đặt hàng.
+        </p>
+
+    </div><!-- container // -->
+</section>
+<!-- ========================= SECTION  END// ========================= -->
+<!-- ========================= FOOTER ========================= -->

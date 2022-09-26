@@ -1,0 +1,196 @@
+﻿@model PhamNhuViet_0237.Product
+@{
+    ViewBag.Title = "ProductDetail";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#addtocart").click(function () {
+            var model = {};
+            //lấy id sản phẩm
+            model.Id = @Model.Id;
+            // lấy số lượng đặt hàng
+            model.Quantity = $("#ipQuantity").val();
+            debugger;
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddToCart", "Cart")',
+                data:  JSON.stringify(model) ,
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    alert("Thêm vào giỏ hàng thành công!")
+                    $('#CartCount').text(@Session["count"] + 1);
+                },
+                error: function () {
+                    alert("Lỗi trong khi thêm vào giỏ hàng!");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+<section class="py-3 bg-light">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Home","Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="#">Danh mục</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content bg-white padding-y">
+    <div class="container">
+
+        <!-- ============================ ITEM DETAIL ======================== -->
+        <div class="row">
+            <aside class="col-md-6">
+                <div class="card">
+                    <article class="gallery-wrap">
+                        <div class="img-big-wrap">
+                            <div> <a href="#"><img src="~/Content/images/items/@Model.Avatar"></a></div>
+                        </div> <!-- slider-product.// -->
+                        <div class="thumbs-wrap">
+                            @*<a href="#" class="item-thumb"> <img src="~/Content/images/items/15.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="~/Content/images/items/15-1.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="~/Content/images/items/15-2.jpg"></a>
+                            <a href="#" class="item-thumb"> <img src="~/Content/images/items/15-1.jpg"></a>*@
+                        </div> <!-- slider-nav.// -->
+                    </article> <!-- gallery-wrap .end// -->
+                </div> <!-- card.// -->
+            </aside>
+            <main class="col-md-6">
+                <article class="product-info-aside">
+
+                    <h3 class="title mt-3">@Model.Name </h3>
+
+                    <div class="rating-wrap my-3">
+                        <ul class="rating-stars">
+                            <li style="width:80%" class="stars-active">
+                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </li>
+                            <li>
+                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i> <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </li>
+                        </ul>
+                        <small class="label-rating text-muted">132 reviews</small>
+                        <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 orders </small>
+                    </div> <!-- rating-wrap.// -->
+
+                    <div class="mb-3">
+                        @if (Model.PriceDiscount != null)
+                        {
+                            <span class="h5 price">@string.Format("{0:0,0}", Model.PriceDiscount)<sup>đ</sup></span><br />
+                            <small class="text-muted" style="text-decoration-line:line-through">@string.Format("{0:0,0}", Model.Price)</small><sup class="text-muted">đ</sup>
+                        }
+                        else
+                        {
+                            <span class="h5 price">@string.Format("{0:0,0}", Model.Price)<sup>đ</sup></span>
+                        }<!-- prie wrap -->
+                    </div> <!-- price-detail-wrap .// -->
+
+                    <p>
+                    </p>
+                    <dl class="row">
+
+                        <dt class="col-sm-3">Bảo hành</dt>
+                        <dd class="col-sm-9">1 năm</dd>
+
+                        <dt class="col-sm-3">Thời gian giao hàng</dt>
+                        <dd class="col-sm-9">3-4 ngày</dd>
+
+                        <dt class="col-sm-3">Tình trạng</dt>
+                        <dd class="col-sm-9">Còn hàng</dd>
+                    </dl>
+
+                    <div class="form-row  mt-4">
+                        <div class="form-group col-md flex-grow-0" >
+                            <div class="input-group mb-3 input-spinner">
+                                <input type="number" min="1" max="99" oninput="validity.valid||(value='');" id="ipQuantity" class="form-control-range" value="1" style="width:50px">
+                            </div>
+                        </div> <!-- col.// -->
+                        <div class="form-group col-md">
+                            <a href="#" id="addtocart" class="btn  btn-primary">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="text" h>Thêm vào giỏ hàng</span>
+                            </a>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+
+                </article> <!-- product-info-aside .// -->
+            </main> <!-- col.// -->
+        </div> <!-- row.// -->
+        <!-- ================ ITEM DETAIL END .// ================= -->
+
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name padding-y bg">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-7">
+                <h5 class="title-description">Mô tả</h5>
+                <p>
+                    @Html.Raw(HttpUtility.HtmlDecode(@Model.ShortDes1))
+                </p>
+
+                <table class="table table-bordered">
+                    @*@Html.Raw(HttpUtility.HtmlDecode(@Model.FullDescription1))*@
+                </table>
+            </div> <!-- col.// -->
+
+            <aside class="col-md-5">
+
+                <div class="box">
+
+                    <h5 class="title-description">Thông số kỹ thuật</h5>
+                    <p>
+                        @Html.Raw(HttpUtility.HtmlDecode(@Model.FullDescription1))
+                    </p>
+
+
+                    @*<article class="media mb-3">
+                        <a href="#"><img class="img-sm mr-3" src="~/Content/images/posts/3.jpg"></a>
+                        <div class="media-body">
+                            <h6 class="mt-0"><a href="#">How to use this item</a></h6>
+                            <p class="mb-2"> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin </p>
+                        </div>
+                    </article>
+
+                    <article class="media mb-3">
+                        <a href="#"><img class="img-sm mr-3" src="~/Content/images/posts/2.jpg"></a>
+                        <div class="media-body">
+                            <h6 class="mt-0"><a href="#">New tips and tricks</a></h6>
+                            <p class="mb-2"> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin </p>
+                        </div>
+                    </article>
+
+                    <article class="media mb-3">
+                        <a href="#"><img class="img-sm mr-3" src="~/Content/images/posts/1.jpg"></a>
+                        <div class="media-body">
+                            <h6 class="mt-0"><a href="#">New tips and tricks</a></h6>
+                            <p class="mb-2"> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin </p>
+                        </div>
+                    </article>*@
+
+
+
+                </div> <!-- box.// -->
+            </aside> <!-- col.// -->
+        </div> <!-- row.// -->
+
+    </div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= FOOTER ========================= -->
